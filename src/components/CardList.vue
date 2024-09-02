@@ -1,23 +1,27 @@
 <script setup>
 import Card from './Card.vue'
-import Drawer from '@/components/Drawer.vue'
 
-const onClickAdd = () => {
-    alert('Добавить корзину')
-}
+const props = defineProps({
+    items: Array
+})
+
+const emit = defineEmits(['addToFavorite'])
+
 </script>
 
 <template>
     <div class="grid grid-cols-4 gap-5">
         <Card
-            title="Мужские Кроссовки Nike Blazer Mid Suede"
-            imageUrl="/img/sneakers/sneakers-1.jpg"
-            :price="5000"
-            :isFavorite="true"
-            :isAdded="false"
-            :onClickAdd="onClickAdd"
+            v-for="item in props.items"
+            :key="item.id"
+            :id="item.id"
+            :title="item.title"
+            :imageUrl="'/img/' + item.imageUrl"
+            :price="Number(item.price)"
+            :isFavorite="item.isFavorite"
+            :isAdded="item.isAdded"
+
+            :onClickFavorite="() => emit('addToFavorite', item)"
         />
     </div>
-
-    <Drawer />
 </template>
